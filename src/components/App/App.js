@@ -35,7 +35,11 @@ export class App extends Component {
 
     const { contacts } = this.state;
 
-    if (contacts.find(contact => contact.name === newContact.name)) {
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
+      )
+    ) {
       return alert(`${newContact.name} is already in contacts`);
     }
 
@@ -56,12 +60,17 @@ export class App extends Component {
     this.setState({ filter: evt.target.value });
   };
 
-  render() {
+  getFilteredContacts = () => {
     const { contacts, filter } = this.state;
     const normalize = filter.toLowerCase();
-    const filterContacts = contacts.filter(contact =>
+    return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalize)
     );
+  };
+
+  render() {
+    const { filter } = this.state;
+    const filterContacts = this.getFilteredContacts();
     return (
       <Layout>
         <Title>Phonebook</Title>
